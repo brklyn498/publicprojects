@@ -169,14 +169,14 @@ describe('Sudoku Store', () => {
 
   describe('Setting Numbers', () => {
     beforeEach(() => {
-      const store = useSudokuStore.getState();
-      store.initializeGame('easy');
+      useSudokuStore.getState().initializeGame('easy');
 
       // Select an empty cell
+      const grid = useSudokuStore.getState().grid;
       for (let r = 0; r < 9; r++) {
         for (let c = 0; c < 9; c++) {
-          if (!store.grid[r][c].isGiven) {
-            store.selectCell(r, c);
+          if (!grid[r][c].isGiven) {
+            useSudokuStore.getState().selectCell(r, c);
             break;
           }
         }
@@ -186,11 +186,10 @@ describe('Sudoku Store', () => {
     it('should set a number in selected cell', async () => {
       vi.useFakeTimers();
 
-      const store = useSudokuStore.getState();
-      const { selectedCell } = store;
+      const { selectedCell } = useSudokuStore.getState();
 
       if (selectedCell) {
-        store.setNumber(5);
+        useSudokuStore.getState().setNumber(5);
 
         vi.advanceTimersByTime(150);
 
@@ -202,14 +201,13 @@ describe('Sudoku Store', () => {
     it('should track mistakes when wrong number entered', async () => {
       vi.useFakeTimers();
 
-      const store = useSudokuStore.getState();
-      const { selectedCell, puzzle } = store;
+      const { selectedCell, puzzle } = useSudokuStore.getState();
 
       if (selectedCell && puzzle) {
         const correctValue = puzzle.solution[selectedCell.row][selectedCell.col];
         const wrongValue = correctValue === 1 ? 2 : 1;
 
-        store.setNumber(wrongValue);
+        useSudokuStore.getState().setNumber(wrongValue);
 
         vi.advanceTimersByTime(150);
 
@@ -221,13 +219,12 @@ describe('Sudoku Store', () => {
     it('should not track mistakes when correct number entered', async () => {
       vi.useFakeTimers();
 
-      const store = useSudokuStore.getState();
-      const { selectedCell, puzzle } = store;
+      const { selectedCell, puzzle } = useSudokuStore.getState();
 
       if (selectedCell && puzzle) {
         const correctValue = puzzle.solution[selectedCell.row][selectedCell.col];
 
-        store.setNumber(correctValue);
+        useSudokuStore.getState().setNumber(correctValue);
 
         vi.advanceTimersByTime(150);
 
@@ -237,13 +234,12 @@ describe('Sudoku Store', () => {
     });
 
     it('should add to history when setting number', () => {
-      const store = useSudokuStore.getState();
-      const { selectedCell } = store;
+      const { selectedCell } = useSudokuStore.getState();
 
       if (selectedCell) {
-        expect(store.history.length).toBe(0);
+        expect(useSudokuStore.getState().history.length).toBe(0);
 
-        store.setNumber(5);
+        useSudokuStore.getState().setNumber(5);
 
         const { history } = useSudokuStore.getState();
         expect(history.length).toBe(1);
@@ -251,13 +247,13 @@ describe('Sudoku Store', () => {
     });
 
     it('should not modify given cells', () => {
-      const store = useSudokuStore.getState();
+      const grid = useSudokuStore.getState().grid;
 
       // Find a given cell
       let givenCell = null;
       for (let r = 0; r < 9; r++) {
         for (let c = 0; c < 9; c++) {
-          if (store.grid[r][c].isGiven) {
+          if (grid[r][c].isGiven) {
             givenCell = { row: r, col: c };
             break;
           }
@@ -265,27 +261,27 @@ describe('Sudoku Store', () => {
       }
 
       if (givenCell) {
-        const originalValue = store.grid[givenCell.row][givenCell.col].value;
+        const originalValue = grid[givenCell.row][givenCell.col].value;
 
         useSudokuStore.setState({ selectedCell: givenCell });
-        store.setNumber(9);
+        useSudokuStore.getState().setNumber(9);
 
-        const { grid } = useSudokuStore.getState();
-        expect(grid[givenCell.row][givenCell.col].value).toBe(originalValue);
+        const { grid: newGrid } = useSudokuStore.getState();
+        expect(newGrid[givenCell.row][givenCell.col].value).toBe(originalValue);
       }
     });
   });
 
   describe('Notes Mode', () => {
     beforeEach(() => {
-      const store = useSudokuStore.getState();
-      store.initializeGame('easy');
+      useSudokuStore.getState().initializeGame('easy');
 
       // Select an empty cell
+      const grid = useSudokuStore.getState().grid;
       for (let r = 0; r < 9; r++) {
         for (let c = 0; c < 9; c++) {
-          if (!store.grid[r][c].isGiven) {
-            store.selectCell(r, c);
+          if (!grid[r][c].isGiven) {
+            useSudokuStore.getState().selectCell(r, c);
             break;
           }
         }
@@ -293,23 +289,21 @@ describe('Sudoku Store', () => {
     });
 
     it('should toggle notes mode', () => {
-      const store = useSudokuStore.getState();
-      expect(store.notesMode).toBe(false);
+      expect(useSudokuStore.getState().notesMode).toBe(false);
 
-      store.toggleNotesMode();
+      useSudokuStore.getState().toggleNotesMode();
       expect(useSudokuStore.getState().notesMode).toBe(true);
 
-      store.toggleNotesMode();
+      useSudokuStore.getState().toggleNotesMode();
       expect(useSudokuStore.getState().notesMode).toBe(false);
     });
 
     it('should add notes when in notes mode', () => {
-      const store = useSudokuStore.getState();
-      const { selectedCell } = store;
+      const { selectedCell } = useSudokuStore.getState();
 
       if (selectedCell) {
-        store.toggleNotesMode();
-        store.setNumber(5);
+        useSudokuStore.getState().toggleNotesMode();
+        useSudokuStore.getState().setNumber(5);
 
         const { grid } = useSudokuStore.getState();
         expect(grid[selectedCell.row][selectedCell.col].notes).toContain(5);
@@ -317,18 +311,17 @@ describe('Sudoku Store', () => {
     });
 
     it('should remove notes when number is set', () => {
-      const store = useSudokuStore.getState();
-      const { selectedCell } = store;
+      const { selectedCell } = useSudokuStore.getState();
 
       if (selectedCell) {
         // Add some notes
-        store.toggleNotesMode();
-        store.setNumber(5);
-        store.setNumber(6);
+        useSudokuStore.getState().toggleNotesMode();
+        useSudokuStore.getState().setNumber(5);
+        useSudokuStore.getState().setNumber(6);
 
         // Switch to normal mode and set number
-        store.toggleNotesMode();
-        store.setNumber(7);
+        useSudokuStore.getState().toggleNotesMode();
+        useSudokuStore.getState().setNumber(7);
 
         const { grid } = useSudokuStore.getState();
         expect(grid[selectedCell.row][selectedCell.col].notes).toEqual([]);
@@ -337,18 +330,17 @@ describe('Sudoku Store', () => {
     });
 
     it('should toggle notes on/off', () => {
-      const store = useSudokuStore.getState();
-      const { selectedCell } = store;
+      const { selectedCell } = useSudokuStore.getState();
 
       if (selectedCell) {
-        store.toggleNotesMode();
-        store.setNumber(5);
+        useSudokuStore.getState().toggleNotesMode();
+        useSudokuStore.getState().setNumber(5);
 
         const { grid: grid1 } = useSudokuStore.getState();
         expect(grid1[selectedCell.row][selectedCell.col].notes).toContain(5);
 
         // Toggle same note should remove it
-        store.setNumber(5);
+        useSudokuStore.getState().setNumber(5);
 
         const { grid: grid2 } = useSudokuStore.getState();
         expect(grid2[selectedCell.row][selectedCell.col].notes).not.toContain(5);
@@ -407,15 +399,15 @@ describe('Sudoku Store', () => {
 
   describe('Clear Cell', () => {
     beforeEach(() => {
-      const store = useSudokuStore.getState();
-      store.initializeGame('easy');
+      useSudokuStore.getState().initializeGame('easy');
 
       // Select and fill an empty cell
+      const grid = useSudokuStore.getState().grid;
       for (let r = 0; r < 9; r++) {
         for (let c = 0; c < 9; c++) {
-          if (!store.grid[r][c].isGiven) {
-            store.selectCell(r, c);
-            store.setNumber(5);
+          if (!grid[r][c].isGiven) {
+            useSudokuStore.getState().selectCell(r, c);
+            useSudokuStore.getState().setNumber(5);
             break;
           }
         }
@@ -423,11 +415,10 @@ describe('Sudoku Store', () => {
     });
 
     it('should clear selected cell', () => {
-      const store = useSudokuStore.getState();
-      const { selectedCell } = store;
+      const { selectedCell } = useSudokuStore.getState();
 
       if (selectedCell) {
-        store.clearCell();
+        useSudokuStore.getState().clearCell();
 
         const { grid } = useSudokuStore.getState();
         expect(grid[selectedCell.row][selectedCell.col].value).toBeNull();
@@ -435,16 +426,15 @@ describe('Sudoku Store', () => {
     });
 
     it('should clear notes when clearing cell', () => {
-      const store = useSudokuStore.getState();
-      const { selectedCell } = store;
+      const { selectedCell } = useSudokuStore.getState();
 
       if (selectedCell) {
         // Add some notes
-        store.toggleNotesMode();
-        store.setNumber(7);
-        store.toggleNotesMode();
+        useSudokuStore.getState().toggleNotesMode();
+        useSudokuStore.getState().setNumber(7);
+        useSudokuStore.getState().toggleNotesMode();
 
-        store.clearCell();
+        useSudokuStore.getState().clearCell();
 
         const { grid } = useSudokuStore.getState();
         expect(grid[selectedCell.row][selectedCell.col].notes).toEqual([]);
@@ -452,10 +442,9 @@ describe('Sudoku Store', () => {
     });
 
     it('should add to history when clearing cell', () => {
-      const store = useSudokuStore.getState();
-      const historyLength = store.history.length;
+      const historyLength = useSudokuStore.getState().history.length;
 
-      store.clearCell();
+      useSudokuStore.getState().clearCell();
 
       const { history } = useSudokuStore.getState();
       expect(history.length).toBe(historyLength + 1);
@@ -464,14 +453,14 @@ describe('Sudoku Store', () => {
 
   describe('Undo', () => {
     beforeEach(() => {
-      const store = useSudokuStore.getState();
-      store.initializeGame('easy');
+      useSudokuStore.getState().initializeGame('easy');
 
       // Select an empty cell
+      const grid = useSudokuStore.getState().grid;
       for (let r = 0; r < 9; r++) {
         for (let c = 0; c < 9; c++) {
-          if (!store.grid[r][c].isGiven) {
-            store.selectCell(r, c);
+          if (!grid[r][c].isGiven) {
+            useSudokuStore.getState().selectCell(r, c);
             break;
           }
         }
@@ -479,18 +468,17 @@ describe('Sudoku Store', () => {
     });
 
     it('should undo last move', () => {
-      const store = useSudokuStore.getState();
-      const { selectedCell } = store;
+      const { selectedCell } = useSudokuStore.getState();
 
       if (selectedCell) {
-        const originalValue = store.grid[selectedCell.row][selectedCell.col].value;
+        const originalValue = useSudokuStore.getState().grid[selectedCell.row][selectedCell.col].value;
 
-        store.setNumber(5);
+        useSudokuStore.getState().setNumber(5);
 
         const { grid: afterSet } = useSudokuStore.getState();
         expect(afterSet[selectedCell.row][selectedCell.col].value).toBe(5);
 
-        store.undo();
+        useSudokuStore.getState().undo();
 
         const { grid: afterUndo } = useSudokuStore.getState();
         expect(afterUndo[selectedCell.row][selectedCell.col].value).toBe(originalValue);
@@ -498,11 +486,9 @@ describe('Sudoku Store', () => {
     });
 
     it('should maintain history limit', () => {
-      const store = useSudokuStore.getState();
-
       // Make more than maxHistory moves
       for (let i = 0; i < 60; i++) {
-        store.setNumber((i % 9) + 1);
+        useSudokuStore.getState().setNumber((i % 9) + 1);
       }
 
       const { history, maxHistory } = useSudokuStore.getState();
@@ -510,10 +496,9 @@ describe('Sudoku Store', () => {
     });
 
     it('should do nothing if no history', () => {
-      const store = useSudokuStore.getState();
-      const { grid: initialGrid } = store;
+      const { grid: initialGrid } = useSudokuStore.getState();
 
-      store.undo();
+      useSudokuStore.getState().undo();
 
       const { grid: afterUndo } = useSudokuStore.getState();
       expect(afterUndo).toEqual(initialGrid);

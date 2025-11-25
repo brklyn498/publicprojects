@@ -82,11 +82,13 @@ export const useMemoryGameStore = create<MemoryGameState>((set, get) => ({
     },
 
     flipCard: (cardId: string) => {
-        const { cards, flippedCards, gameStatus, moves } = get();
+        let { cards, flippedCards, gameStatus, moves } = get();
 
         // Don't flip if game not started, card already flipped, or 2 cards already flipped
         if (gameStatus === "idle") {
             get().startGame();
+            // Re-fetch state after starting game
+            ({ cards, flippedCards, gameStatus, moves } = get());
         }
         if (gameStatus !== "playing") return;
         if (flippedCards.length >= 2) return;

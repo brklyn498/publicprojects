@@ -28,8 +28,7 @@ describe('Memory Game Store', () => {
 
   describe('Game Initialization', () => {
     it('should initialize game with easy difficulty', () => {
-      const store = useMemoryGameStore.getState();
-      store.initializeGame('easy', 'emoji');
+      useMemoryGameStore.getState().initializeGame('easy', 'emoji');
 
       const { cards, difficulty, theme } = useMemoryGameStore.getState();
 
@@ -39,8 +38,7 @@ describe('Memory Game Store', () => {
     });
 
     it('should initialize game with medium difficulty', () => {
-      const store = useMemoryGameStore.getState();
-      store.initializeGame('medium', 'numbers');
+      useMemoryGameStore.getState().initializeGame('medium', 'numbers');
 
       const { cards, difficulty } = useMemoryGameStore.getState();
 
@@ -49,8 +47,7 @@ describe('Memory Game Store', () => {
     });
 
     it('should initialize game with hard difficulty', () => {
-      const store = useMemoryGameStore.getState();
-      store.initializeGame('hard', 'colors');
+      useMemoryGameStore.getState().initializeGame('hard', 'colors');
 
       const { cards, difficulty } = useMemoryGameStore.getState();
 
@@ -59,8 +56,7 @@ describe('Memory Game Store', () => {
     });
 
     it('should create cards in pairs', () => {
-      const store = useMemoryGameStore.getState();
-      store.initializeGame('easy', 'numbers');
+      useMemoryGameStore.getState().initializeGame('easy', 'numbers');
 
       const { cards } = useMemoryGameStore.getState();
 
@@ -77,8 +73,7 @@ describe('Memory Game Store', () => {
     });
 
     it('should initialize all cards as not flipped and not matched', () => {
-      const store = useMemoryGameStore.getState();
-      store.initializeGame('easy', 'emoji');
+      useMemoryGameStore.getState().initializeGame('easy', 'emoji');
 
       const { cards } = useMemoryGameStore.getState();
 
@@ -89,8 +84,6 @@ describe('Memory Game Store', () => {
     });
 
     it('should reset game state on initialization', () => {
-      const store = useMemoryGameStore.getState();
-
       // Set some game state
       useMemoryGameStore.setState({
         moves: 10,
@@ -100,7 +93,7 @@ describe('Memory Game Store', () => {
       });
 
       // Reinitialize
-      store.initializeGame('easy', 'emoji');
+      useMemoryGameStore.getState().initializeGame('easy', 'emoji');
 
       const { moves, matchesFound, flippedCards, gameStatus } = useMemoryGameStore.getState();
 
@@ -113,21 +106,18 @@ describe('Memory Game Store', () => {
 
   describe('Starting Game', () => {
     beforeEach(() => {
-      const store = useMemoryGameStore.getState();
-      store.initializeGame('easy', 'emoji');
+      useMemoryGameStore.getState().initializeGame('easy', 'emoji');
     });
 
     it('should set game status to playing', () => {
-      const store = useMemoryGameStore.getState();
-      store.startGame();
+      useMemoryGameStore.getState().startGame();
 
       const { gameStatus } = useMemoryGameStore.getState();
       expect(gameStatus).toBe('playing');
     });
 
     it('should start timer', () => {
-      const store = useMemoryGameStore.getState();
-      store.startGame();
+      useMemoryGameStore.getState().startGame();
 
       const { timerStarted } = useMemoryGameStore.getState();
       expect(timerStarted).not.toBeNull();
@@ -137,15 +127,13 @@ describe('Memory Game Store', () => {
 
   describe('Flipping Cards', () => {
     beforeEach(() => {
-      const store = useMemoryGameStore.getState();
-      store.initializeGame('easy', 'emoji');
+      useMemoryGameStore.getState().initializeGame('easy', 'emoji');
     });
 
     it('should flip a card', () => {
-      const store = useMemoryGameStore.getState();
-      const firstCard = store.cards[0];
+      const firstCard = useMemoryGameStore.getState().cards[0];
 
-      store.flipCard(firstCard.id);
+      useMemoryGameStore.getState().flipCard(firstCard.id);
 
       const { cards } = useMemoryGameStore.getState();
       const flippedCard = cards.find(c => c.id === firstCard.id);
@@ -154,22 +142,20 @@ describe('Memory Game Store', () => {
     });
 
     it('should start game automatically on first card flip', () => {
-      const store = useMemoryGameStore.getState();
-      const firstCard = store.cards[0];
+      const firstCard = useMemoryGameStore.getState().cards[0];
 
-      expect(store.gameStatus).toBe('idle');
+      expect(useMemoryGameStore.getState().gameStatus).toBe('idle');
 
-      store.flipCard(firstCard.id);
+      useMemoryGameStore.getState().flipCard(firstCard.id);
 
       const { gameStatus } = useMemoryGameStore.getState();
       expect(gameStatus).toBe('playing');
     });
 
     it('should add card to flippedCards array', () => {
-      const store = useMemoryGameStore.getState();
-      const firstCard = store.cards[0];
+      const firstCard = useMemoryGameStore.getState().cards[0];
 
-      store.flipCard(firstCard.id);
+      useMemoryGameStore.getState().flipCard(firstCard.id);
 
       const { flippedCards } = useMemoryGameStore.getState();
       expect(flippedCards).toContain(firstCard.id);
@@ -177,57 +163,53 @@ describe('Memory Game Store', () => {
     });
 
     it('should allow flipping two cards', () => {
-      const store = useMemoryGameStore.getState();
-      const [firstCard, secondCard] = store.cards;
+      const [firstCard, secondCard] = useMemoryGameStore.getState().cards;
 
-      store.flipCard(firstCard.id);
-      store.flipCard(secondCard.id);
+      useMemoryGameStore.getState().flipCard(firstCard.id);
+      useMemoryGameStore.getState().flipCard(secondCard.id);
 
       const { flippedCards } = useMemoryGameStore.getState();
       expect(flippedCards).toHaveLength(2);
     });
 
     it('should not flip more than two cards at once', () => {
-      const store = useMemoryGameStore.getState();
-      const [card1, card2, card3] = store.cards;
+      const [card1, card2, card3] = useMemoryGameStore.getState().cards;
 
-      store.flipCard(card1.id);
-      store.flipCard(card2.id);
-      store.flipCard(card3.id); // This should be ignored
+      useMemoryGameStore.getState().flipCard(card1.id);
+      useMemoryGameStore.getState().flipCard(card2.id);
+      useMemoryGameStore.getState().flipCard(card3.id); // This should be ignored
 
       const { flippedCards } = useMemoryGameStore.getState();
       expect(flippedCards).toHaveLength(2);
     });
 
     it('should not flip already matched cards', () => {
-      const store = useMemoryGameStore.getState();
-      const firstCard = store.cards[0];
+      const firstCard = useMemoryGameStore.getState().cards[0];
 
       // Mark card as matched
       useMemoryGameStore.setState({
-        cards: store.cards.map(c =>
+        cards: useMemoryGameStore.getState().cards.map(c =>
           c.id === firstCard.id ? { ...c, isMatched: true } : c
         ),
       });
 
-      store.flipCard(firstCard.id);
+      useMemoryGameStore.getState().flipCard(firstCard.id);
 
       const { flippedCards } = useMemoryGameStore.getState();
       expect(flippedCards).toHaveLength(0);
     });
 
     it('should not flip already flipped cards', () => {
-      const store = useMemoryGameStore.getState();
-      const firstCard = store.cards[0];
+      const firstCard = useMemoryGameStore.getState().cards[0];
 
       // Flip card once
-      store.flipCard(firstCard.id);
+      useMemoryGameStore.getState().flipCard(firstCard.id);
 
       const { flippedCards: firstFlip } = useMemoryGameStore.getState();
       expect(firstFlip).toHaveLength(1);
 
       // Try to flip same card again
-      store.flipCard(firstCard.id);
+      useMemoryGameStore.getState().flipCard(firstCard.id);
 
       const { flippedCards: secondFlip } = useMemoryGameStore.getState();
       expect(secondFlip).toHaveLength(1); // Should still be 1
@@ -236,21 +218,19 @@ describe('Memory Game Store', () => {
 
   describe('Match Detection', () => {
     beforeEach(() => {
-      const store = useMemoryGameStore.getState();
-      store.initializeGame('easy', 'numbers');
-      store.startGame();
+      useMemoryGameStore.getState().initializeGame('easy', 'numbers');
+      useMemoryGameStore.getState().startGame();
     });
 
     it('should detect matching cards', async () => {
       vi.useFakeTimers();
 
-      const store = useMemoryGameStore.getState();
       // Find two cards with the same pairId
-      const matchingCards = store.cards.filter(c => c.pairId === 0);
+      const matchingCards = useMemoryGameStore.getState().cards.filter(c => c.pairId === 0);
       const [card1, card2] = matchingCards;
 
-      store.flipCard(card1.id);
-      store.flipCard(card2.id);
+      useMemoryGameStore.getState().flipCard(card1.id);
+      useMemoryGameStore.getState().flipCard(card2.id);
 
       // Wait for match check delay
       vi.advanceTimersByTime(800);
@@ -268,13 +248,12 @@ describe('Memory Game Store', () => {
     it('should flip back non-matching cards', async () => {
       vi.useFakeTimers();
 
-      const store = useMemoryGameStore.getState();
       // Find two cards with different pairIds
-      const card1 = store.cards.find(c => c.pairId === 0)!;
-      const card2 = store.cards.find(c => c.pairId === 1)!;
+      const card1 = useMemoryGameStore.getState().cards.find(c => c.pairId === 0)!;
+      const card2 = useMemoryGameStore.getState().cards.find(c => c.pairId === 1)!;
 
-      store.flipCard(card1.id);
-      store.flipCard(card2.id);
+      useMemoryGameStore.getState().flipCard(card1.id);
+      useMemoryGameStore.getState().flipCard(card2.id);
 
       // Wait for match check delay
       vi.advanceTimersByTime(800);
@@ -291,12 +270,11 @@ describe('Memory Game Store', () => {
     it('should clear flippedCards after match', async () => {
       vi.useFakeTimers();
 
-      const store = useMemoryGameStore.getState();
-      const matchingCards = store.cards.filter(c => c.pairId === 0);
+      const matchingCards = useMemoryGameStore.getState().cards.filter(c => c.pairId === 0);
       const [card1, card2] = matchingCards;
 
-      store.flipCard(card1.id);
-      store.flipCard(card2.id);
+      useMemoryGameStore.getState().flipCard(card1.id);
+      useMemoryGameStore.getState().flipCard(card2.id);
 
       vi.advanceTimersByTime(800);
 
@@ -305,15 +283,14 @@ describe('Memory Game Store', () => {
     });
 
     it('should increment moves counter on second card flip', () => {
-      const store = useMemoryGameStore.getState();
-      const [card1, card2] = store.cards;
+      const [card1, card2] = useMemoryGameStore.getState().cards;
 
-      expect(store.moves).toBe(0);
-
-      store.flipCard(card1.id);
       expect(useMemoryGameStore.getState().moves).toBe(0);
 
-      store.flipCard(card2.id);
+      useMemoryGameStore.getState().flipCard(card1.id);
+      expect(useMemoryGameStore.getState().moves).toBe(0);
+
+      useMemoryGameStore.getState().flipCard(card2.id);
       expect(useMemoryGameStore.getState().moves).toBe(1);
     });
   });
@@ -322,17 +299,16 @@ describe('Memory Game Store', () => {
     it('should detect win when all pairs matched', async () => {
       vi.useFakeTimers();
 
-      const store = useMemoryGameStore.getState();
-      store.initializeGame('easy', 'numbers'); // 8 pairs
-      store.startGame();
+      useMemoryGameStore.getState().initializeGame('easy', 'numbers'); // 8 pairs
+      useMemoryGameStore.getState().startGame();
 
       // Match all 8 pairs
       for (let pairId = 0; pairId < 8; pairId++) {
-        const matchingCards = store.cards.filter(c => c.pairId === pairId);
+        const matchingCards = useMemoryGameStore.getState().cards.filter(c => c.pairId === pairId);
         const [card1, card2] = matchingCards;
 
-        store.flipCard(card1.id);
-        store.flipCard(card2.id);
+        useMemoryGameStore.getState().flipCard(card1.id);
+        useMemoryGameStore.getState().flipCard(card2.id);
 
         vi.advanceTimersByTime(800);
       }
@@ -346,17 +322,16 @@ describe('Memory Game Store', () => {
     it('should record game stats on win', async () => {
       vi.useFakeTimers();
 
-      const store = useMemoryGameStore.getState();
-      store.initializeGame('easy', 'numbers');
-      store.startGame();
+      useMemoryGameStore.getState().initializeGame('easy', 'numbers');
+      useMemoryGameStore.getState().startGame();
 
       // Match all pairs
       for (let pairId = 0; pairId < 8; pairId++) {
-        const matchingCards = store.cards.filter(c => c.pairId === pairId);
+        const matchingCards = useMemoryGameStore.getState().cards.filter(c => c.pairId === pairId);
         const [card1, card2] = matchingCards;
 
-        store.flipCard(card1.id);
-        store.flipCard(card2.id);
+        useMemoryGameStore.getState().flipCard(card1.id);
+        useMemoryGameStore.getState().flipCard(card2.id);
 
         vi.advanceTimersByTime(800);
       }
@@ -373,17 +348,16 @@ describe('Memory Game Store', () => {
     it('should detect perfect game (minimum moves)', async () => {
       vi.useFakeTimers();
 
-      const store = useMemoryGameStore.getState();
-      store.initializeGame('easy', 'numbers');
-      store.startGame();
+      useMemoryGameStore.getState().initializeGame('easy', 'numbers');
+      useMemoryGameStore.getState().startGame();
 
       // Match all pairs with perfect moves (8 pairs = 8 moves)
       for (let pairId = 0; pairId < 8; pairId++) {
-        const matchingCards = store.cards.filter(c => c.pairId === pairId);
+        const matchingCards = useMemoryGameStore.getState().cards.filter(c => c.pairId === pairId);
         const [card1, card2] = matchingCards;
 
-        store.flipCard(card1.id);
-        store.flipCard(card2.id);
+        useMemoryGameStore.getState().flipCard(card1.id);
+        useMemoryGameStore.getState().flipCard(card2.id);
 
         vi.advanceTimersByTime(800);
       }
@@ -396,25 +370,24 @@ describe('Memory Game Store', () => {
     it('should not mark as perfect if extra moves made', async () => {
       vi.useFakeTimers();
 
-      const store = useMemoryGameStore.getState();
-      store.initializeGame('easy', 'numbers');
-      store.startGame();
+      useMemoryGameStore.getState().initializeGame('easy', 'numbers');
+      useMemoryGameStore.getState().startGame();
 
       // Make one wrong match
-      const card1 = store.cards.find(c => c.pairId === 0)!;
-      const card2 = store.cards.find(c => c.pairId === 1)!;
+      const card1 = useMemoryGameStore.getState().cards.find(c => c.pairId === 0)!;
+      const card2 = useMemoryGameStore.getState().cards.find(c => c.pairId === 1)!;
 
-      store.flipCard(card1.id);
-      store.flipCard(card2.id);
+      useMemoryGameStore.getState().flipCard(card1.id);
+      useMemoryGameStore.getState().flipCard(card2.id);
       vi.advanceTimersByTime(800);
 
       // Now match all pairs correctly
       for (let pairId = 0; pairId < 8; pairId++) {
-        const matchingCards = store.cards.filter(c => c.pairId === pairId);
+        const matchingCards = useMemoryGameStore.getState().cards.filter(c => c.pairId === pairId);
         const [card1, card2] = matchingCards;
 
-        store.flipCard(card1.id);
-        store.flipCard(card2.id);
+        useMemoryGameStore.getState().flipCard(card1.id);
+        useMemoryGameStore.getState().flipCard(card2.id);
 
         vi.advanceTimersByTime(800);
       }
@@ -430,17 +403,16 @@ describe('Memory Game Store', () => {
     it('should update best score for first completion', async () => {
       vi.useFakeTimers();
 
-      const store = useMemoryGameStore.getState();
-      store.initializeGame('easy', 'numbers');
-      store.startGame();
+      useMemoryGameStore.getState().initializeGame('easy', 'numbers');
+      useMemoryGameStore.getState().startGame();
 
       // Complete game
       for (let pairId = 0; pairId < 8; pairId++) {
-        const matchingCards = store.cards.filter(c => c.pairId === pairId);
+        const matchingCards = useMemoryGameStore.getState().cards.filter(c => c.pairId === pairId);
         const [card1, card2] = matchingCards;
 
-        store.flipCard(card1.id);
-        store.flipCard(card2.id);
+        useMemoryGameStore.getState().flipCard(card1.id);
+        useMemoryGameStore.getState().flipCard(card2.id);
 
         vi.advanceTimersByTime(800);
       }
@@ -454,18 +426,16 @@ describe('Memory Game Store', () => {
     it('should update best score only if faster', async () => {
       vi.useFakeTimers();
 
-      const store = useMemoryGameStore.getState();
-
       // First game - 10 seconds
-      store.initializeGame('easy', 'numbers');
-      store.startGame();
+      useMemoryGameStore.getState().initializeGame('easy', 'numbers');
+      useMemoryGameStore.getState().startGame();
 
       for (let pairId = 0; pairId < 8; pairId++) {
-        const matchingCards = store.cards.filter(c => c.pairId === pairId);
+        const matchingCards = useMemoryGameStore.getState().cards.filter(c => c.pairId === pairId);
         const [card1, card2] = matchingCards;
 
-        store.flipCard(card1.id);
-        store.flipCard(card2.id);
+        useMemoryGameStore.getState().flipCard(card1.id);
+        useMemoryGameStore.getState().flipCard(card2.id);
 
         vi.advanceTimersByTime(800);
       }
@@ -476,15 +446,15 @@ describe('Memory Game Store', () => {
       const firstTime = firstBest.easy?.timeElapsed;
 
       // Second game - faster (5 seconds)
-      store.initializeGame('easy', 'numbers');
-      store.startGame();
+      useMemoryGameStore.getState().initializeGame('easy', 'numbers');
+      useMemoryGameStore.getState().startGame();
 
       for (let pairId = 0; pairId < 8; pairId++) {
-        const matchingCards = store.cards.filter(c => c.pairId === pairId);
+        const matchingCards = useMemoryGameStore.getState().cards.filter(c => c.pairId === pairId);
         const [card1, card2] = matchingCards;
 
-        store.flipCard(card1.id);
-        store.flipCard(card2.id);
+        useMemoryGameStore.getState().flipCard(card1.id);
+        useMemoryGameStore.getState().flipCard(card2.id);
 
         vi.advanceTimersByTime(800);
       }
@@ -499,8 +469,6 @@ describe('Memory Game Store', () => {
 
     it('should not update best score if slower', async () => {
       vi.useFakeTimers();
-
-      const store = useMemoryGameStore.getState();
 
       // Set an existing best score
       useMemoryGameStore.setState({
@@ -520,15 +488,15 @@ describe('Memory Game Store', () => {
       });
 
       // Play a slower game
-      store.initializeGame('easy', 'numbers');
-      store.startGame();
+      useMemoryGameStore.getState().initializeGame('easy', 'numbers');
+      useMemoryGameStore.getState().startGame();
 
       for (let pairId = 0; pairId < 8; pairId++) {
-        const matchingCards = store.cards.filter(c => c.pairId === pairId);
+        const matchingCards = useMemoryGameStore.getState().cards.filter(c => c.pairId === pairId);
         const [card1, card2] = matchingCards;
 
-        store.flipCard(card1.id);
-        store.flipCard(card2.id);
+        useMemoryGameStore.getState().flipCard(card1.id);
+        useMemoryGameStore.getState().flipCard(card2.id);
 
         vi.advanceTimersByTime(800);
       }
@@ -545,22 +513,20 @@ describe('Memory Game Store', () => {
     it('should update timer while game is playing', () => {
       vi.useFakeTimers();
 
-      const store = useMemoryGameStore.getState();
-      store.initializeGame('easy', 'emoji');
-      store.startGame();
+      useMemoryGameStore.getState().initializeGame('easy', 'emoji');
+      useMemoryGameStore.getState().startGame();
 
       vi.advanceTimersByTime(5000);
-      store.updateTimer();
+      useMemoryGameStore.getState().updateTimer();
 
       const { timerElapsed } = useMemoryGameStore.getState();
       expect(timerElapsed).toBeGreaterThan(0);
     });
 
     it('should not update timer when game is idle', () => {
-      const store = useMemoryGameStore.getState();
-      store.initializeGame('easy', 'emoji');
+      useMemoryGameStore.getState().initializeGame('easy', 'emoji');
 
-      store.updateTimer();
+      useMemoryGameStore.getState().updateTimer();
 
       const { timerElapsed } = useMemoryGameStore.getState();
       expect(timerElapsed).toBe(0);
@@ -569,12 +535,11 @@ describe('Memory Game Store', () => {
     it('should track elapsed time in seconds', () => {
       vi.useFakeTimers();
 
-      const store = useMemoryGameStore.getState();
-      store.initializeGame('easy', 'emoji');
-      store.startGame();
+      useMemoryGameStore.getState().initializeGame('easy', 'emoji');
+      useMemoryGameStore.getState().startGame();
 
       vi.advanceTimersByTime(10000); // 10 seconds
-      store.updateTimer();
+      useMemoryGameStore.getState().updateTimer();
 
       const { timerElapsed } = useMemoryGameStore.getState();
       expect(timerElapsed).toBe(10);
@@ -583,8 +548,7 @@ describe('Memory Game Store', () => {
 
   describe('Reset Game', () => {
     it('should reset game with same difficulty and theme', () => {
-      const store = useMemoryGameStore.getState();
-      store.initializeGame('medium', 'colors');
+      useMemoryGameStore.getState().initializeGame('medium', 'colors');
 
       // Play a bit
       useMemoryGameStore.setState({
@@ -593,7 +557,7 @@ describe('Memory Game Store', () => {
         gameStatus: 'playing',
       });
 
-      store.resetGame();
+      useMemoryGameStore.getState().resetGame();
 
       const { difficulty, theme, moves, matchesFound, gameStatus } = useMemoryGameStore.getState();
 
@@ -607,8 +571,7 @@ describe('Memory Game Store', () => {
 
   describe('Statistics Getters', () => {
     beforeEach(() => {
-      const store = useMemoryGameStore.getState();
-      store.initializeGame('easy', 'emoji');
+      useMemoryGameStore.getState().initializeGame('easy', 'emoji');
     });
 
     describe('getTotalGamesPlayed', () => {
@@ -636,15 +599,13 @@ describe('Memory Game Store', () => {
           ],
         });
 
-        const store = useMemoryGameStore.getState();
-        const total = store.getTotalGamesPlayed();
+        const total = useMemoryGameStore.getState().getTotalGamesPlayed();
 
         expect(total).toBe(2);
       });
 
       it('should return 0 when no games played', () => {
-        const store = useMemoryGameStore.getState();
-        const total = store.getTotalGamesPlayed();
+        const total = useMemoryGameStore.getState().getTotalGamesPlayed();
 
         expect(total).toBe(0);
       });
@@ -684,8 +645,7 @@ describe('Memory Game Store', () => {
           ],
         });
 
-        const store = useMemoryGameStore.getState();
-        const perfect = store.getPerfectGames();
+        const perfect = useMemoryGameStore.getState().getPerfectGames();
 
         expect(perfect).toBe(2);
       });
@@ -705,8 +665,7 @@ describe('Memory Game Store', () => {
           ],
         });
 
-        const store = useMemoryGameStore.getState();
-        const perfect = store.getPerfectGames();
+        const perfect = useMemoryGameStore.getState().getPerfectGames();
 
         expect(perfect).toBe(0);
       });
@@ -746,15 +705,13 @@ describe('Memory Game Store', () => {
           ],
         });
 
-        const store = useMemoryGameStore.getState();
-        const average = store.getAverageTime();
+        const average = useMemoryGameStore.getState().getAverageTime();
 
         expect(average).toBe(40); // (30 + 40 + 50) / 3 = 40
       });
 
       it('should return 0 when no games played', () => {
-        const store = useMemoryGameStore.getState();
-        const average = store.getAverageTime();
+        const average = useMemoryGameStore.getState().getAverageTime();
 
         expect(average).toBe(0);
       });
@@ -765,17 +722,16 @@ describe('Memory Game Store', () => {
     it('should save game history to localStorage', async () => {
       vi.useFakeTimers();
 
-      const store = useMemoryGameStore.getState();
-      store.initializeGame('easy', 'numbers');
-      store.startGame();
+      useMemoryGameStore.getState().initializeGame('easy', 'numbers');
+      useMemoryGameStore.getState().startGame();
 
       // Complete game
       for (let pairId = 0; pairId < 8; pairId++) {
-        const matchingCards = store.cards.filter(c => c.pairId === pairId);
+        const matchingCards = useMemoryGameStore.getState().cards.filter(c => c.pairId === pairId);
         const [card1, card2] = matchingCards;
 
-        store.flipCard(card1.id);
-        store.flipCard(card2.id);
+        useMemoryGameStore.getState().flipCard(card1.id);
+        useMemoryGameStore.getState().flipCard(card2.id);
 
         vi.advanceTimersByTime(800);
       }
@@ -790,17 +746,16 @@ describe('Memory Game Store', () => {
     it('should save best scores to localStorage', async () => {
       vi.useFakeTimers();
 
-      const store = useMemoryGameStore.getState();
-      store.initializeGame('easy', 'numbers');
-      store.startGame();
+      useMemoryGameStore.getState().initializeGame('easy', 'numbers');
+      useMemoryGameStore.getState().startGame();
 
       // Complete game
       for (let pairId = 0; pairId < 8; pairId++) {
-        const matchingCards = store.cards.filter(c => c.pairId === pairId);
+        const matchingCards = useMemoryGameStore.getState().cards.filter(c => c.pairId === pairId);
         const [card1, card2] = matchingCards;
 
-        store.flipCard(card1.id);
-        store.flipCard(card2.id);
+        useMemoryGameStore.getState().flipCard(card1.id);
+        useMemoryGameStore.getState().flipCard(card2.id);
 
         vi.advanceTimersByTime(800);
       }

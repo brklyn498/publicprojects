@@ -139,11 +139,6 @@ export const useTicTacToeStore = create<TicTacToeState>((set, get) => ({
             return;
         }
 
-        // Don't allow player to move if it's AI's turn
-        if (gameMode === "pvc" && currentPlayer === "O") {
-            return;
-        }
-
         // Make the move
         const newBoard = board.map((r, rowIndex) =>
             r.map((cell, colIndex) =>

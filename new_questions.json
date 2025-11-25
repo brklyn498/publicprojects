@@ -1,0 +1,122 @@
+{
+  "puzzles": [
+    {
+      "id": "level_1_easy",
+      "title": "The Breakfast Mini",
+      "difficulty": "Easy",
+      "gridSize": { "rows": 3, "cols": 3 },
+      "words": [
+        { "id": "1-a", "clue": "Flying mammal", "answer": "BAT", "orientation": "across", "startRow": 0, "startCol": 0 },
+        { "id": "2-a", "clue": "Consumed food", "answer": "ATE", "orientation": "across", "startRow": 1, "startCol": 0 },
+        { "id": "3-a", "clue": "Hot brewed drink", "answer": "TEA", "orientation": "across", "startRow": 2, "startCol": 0 },
+        { "id": "1-d", "clue": "Not good", "answer": "BAT", "orientation": "down", "startRow": 0, "startCol": 0 },
+        { "id": "2-d", "clue": "Existing or available", "answer": "ATE", "orientation": "down", "startRow": 0, "startCol": 1 },
+        { "id": "3-d", "clue": "Number after nine", "answer": "TEA", "orientation": "down", "startRow": 0, "startCol": 2 }
+      ]
+    },
+    {
+      "id": "level_2_medium",
+      "title": "The Symmetric Square",
+      "difficulty": "Medium",
+      "gridSize": { "rows": 4, "cols": 4 },
+      "words": [
+        { "id": "1-a", "clue": "Baby sheep", "answer": "LAMB", "orientation": "across", "startRow": 0, "startCol": 0 },
+        { "id": "2-a", "clue": "Length x Width", "answer": "AREA", "orientation": "across", "startRow": 1, "startCol": 0 },
+        { "id": "3-a", "clue": "Carnivore's food", "answer": "MEAT", "orientation": "across", "startRow": 2, "startCol": 0 },
+        { "id": "4-a", "clue": "Tub activity", "answer": "BATH", "orientation": "across", "startRow": 3, "startCol": 0 },
+        { "id": "1-d", "clue": "Mary had a little one", "answer": "LAMB", "orientation": "down", "startRow": 0, "startCol": 0 },
+        { "id": "2-d", "clue": "Region or zone", "answer": "AREA", "orientation": "down", "startRow": 0, "startCol": 1 },
+        { "id": "3-d", "clue": "Beef or pork", "answer": "MEAT", "orientation": "down", "startRow": 0, "startCol": 2 },
+        { "id": "4-d", "clue": "Shower alternative", "answer": "BATH", "orientation": "down", "startRow": 0, "startCol": 3 }
+      ]
+    },
+    {
+      "id": "level_3_hard",
+      "title": "Новогоднее Кино",
+      "difficulty": "Hard",
+      "gridSize": { "rows": 14, "cols": 16 },
+      "words": [
+        {
+          "id": "1-a",
+          "clue": "Какая фамилия у Джека из мультфильма «Кошмар перед Рождеством»?",
+          "answer": "СКЕЛЛИНГТОН",
+          "orientation": "across",
+          "startRow": 5,
+          "startCol": 2
+        },
+        {
+          "id": "2-a",
+          "clue": "В какую страну отправилась семья Маккаллистер в первой серии из фильма «Один дома»?",
+          "answer": "ФРАНЦИЯ",
+          "orientation": "across",
+          "startRow": 6,
+          "startCol": 2
+        },
+        {
+          "id": "3-a",
+          "clue": "По словам Драко Малфой, этому учится Поттер из киносаги «Гарри Поттер»",
+          "answer": "БАЛЕТ",
+          "orientation": "across",
+          "startRow": 7,
+          "startCol": 7
+        },
+        {
+          "id": "4-a",
+          "clue": "Как зовут собаку Джека Скеллингтона из мультфильма «Кошмар перед Рождеством»?",
+          "answer": "ЗЕРО",
+          "orientation": "across",
+          "startRow": 9,
+          "startCol": 2
+        },
+        {
+          "id": "5-a",
+          "clue": "Персонаж, чья личность остаётся загадкой в мультфильме «Полярный экспресс», который живёт на крыше поезда",
+          "answer": "БРОДЯГА",
+          "orientation": "across",
+          "startRow": 9,
+          "startCol": 9
+        },
+        {
+          "id": "1-d",
+          "clue": "Как зовут собачку Гринча из фильма «Гринч - похититель Рождества»?",
+          "answer": "МАКС",
+          "orientation": "down",
+          "startRow": 2,
+          "startCol": 2
+        },
+        {
+          "id": "2-d",
+          "clue": "Фамилия духа зимы, который получил свой посох из мультфильма «Хранители снов»",
+          "answer": "ФРОСТ",
+          "orientation": "down",
+          "startRow": 3,
+          "startCol": 11
+        },
+        {
+          "id": "3-d",
+          "clue": "Как зовут злого духа, который наводит кошмары из мультфильма «Хранители снов»?",
+          "answer": "КРОМЕШНИК",
+          "orientation": "down",
+          "startRow": 5,
+          "startCol": 3
+        },
+        {
+          "id": "4-d",
+          "clue": "Как зовут питомца Невилла Долгопупса из киносаги «Гарри Поттер»?",
+          "answer": "ТРЕВОР",
+          "orientation": "down",
+          "startRow": 5,
+          "startCol": 10
+        },
+        {
+          "id": "5-d",
+          "clue": "Как зовут самого старшего брата Кевина из фильма «Один дома»?",
+          "answer": "БАЗЗ",
+          "orientation": "down",
+          "startRow": 7,
+          "startCol": 2
+        }
+      ]
+    }
+  ]
+}

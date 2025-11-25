@@ -6,6 +6,7 @@ import { Home } from "lucide-react";
 import TicTacToeBoard from "@/components/tictactoe/TicTacToeBoard";
 import GameStatus from "@/components/tictactoe/GameStatus";
 import GameModeSelector from "@/components/tictactoe/GameModeSelector";
+import StatsDisplay from "@/components/tictactoe/StatsDisplay";
 import WinModalTTT from "@/components/tictactoe/WinModalTTT";
 import ThemeToggle from "@/components/ThemeToggle";
 
@@ -57,6 +58,7 @@ export default function TicTacToePage() {
                     transition={{ delay: 0.2 }}
                     className="w-full max-w-2xl"
                 >
+                    <StatsDisplay />
                     <GameModeSelector />
                     <GameStatus />
                     <TicTacToeBoard />

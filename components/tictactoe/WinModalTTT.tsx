@@ -7,7 +7,7 @@ import { Trophy, Users } from "lucide-react";
 import confetti from "canvas-confetti";
 
 export default function WinModalTTT() {
-    const { gameStatus, winner, resetGame, gameMode } = useTicTacToeStore();
+    const { gameStatus, winner, resetGame, gameMode, stats } = useTicTacToeStore();
 
     useEffect(() => {
         if (gameStatus === "won") {
@@ -39,6 +39,9 @@ export default function WinModalTTT() {
             frame();
         }
     }, [gameStatus, winner]);
+
+    // Check if this was a new best streak
+    const isNewBestStreak = stats.currentStreak === stats.bestStreak && stats.currentStreak > 1;
 
     return (
         <AnimatePresence>
@@ -82,6 +85,24 @@ export default function WinModalTTT() {
                                 : "It's a Draw!"}
                         </h2>
 
+                        {/* Win Streak Display */}
+                        {gameStatus === "won" && winner === "X" && (
+                            <div className="mb-4">
+                                <div className="text-lg font-semibold text-blue-600 dark:text-blue-400">
+                                    🔥 {stats.currentStreak} Win Streak!
+                                </div>
+                                {isNewBestStreak && (
+                                    <motion.div
+                                        initial={{ scale: 0 }}
+                                        animate={{ scale: 1 }}
+                                        className="text-sm font-medium text-yellow-600 dark:text-yellow-400 mt-1"
+                                    >
+                                        ⭐ New Best Streak!
+                                    </motion.div>
+                                )}
+                            </div>
+                        )}
+
                         {gameStatus === "won" && (
                             <p className="text-gray-600 dark:text-gray-300 mb-6">
                                 Congratulations on your victory! 🎉
@@ -99,7 +120,7 @@ export default function WinModalTTT() {
                             className="
                 w-full bg-black dark:bg-white hover:bg-gray-800 dark:hover:bg-gray-200 
                 text-white dark:text-black
-                font-semibold  py-4 px-6 rounded-lg
+                font-semibold py-4 px-6 rounded-lg
                 transition-colors duration-200
                 text-lg
               "

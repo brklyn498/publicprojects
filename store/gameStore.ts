@@ -312,4 +312,26 @@ export const useGameStore = create<GameState>((set, get) => ({
 
     return isCorrect;
   },
+
+  // Crossword Statistics Getters
+  getTotalPuzzlesCompleted: () => {
+    const stats = get().puzzleStats;
+    // Count unique puzzle IDs
+    const uniquePuzzles = new Set(stats.map(s => s.puzzleId));
+    return uniquePuzzles.size;
+  },
+
+  getPerfectSolves: () => {
+    const stats = get().puzzleStats;
+    // Count completions with 0 hints
+    return stats.filter(s => s.hintsUsed === 0).length;
+  },
+
+  getAverageCompletionTime: () => {
+    const stats = get().puzzleStats;
+    if (stats.length === 0) return 0;
+
+    const totalTime = stats.reduce((sum, s) => sum + s.completionTime, 0);
+    return Math.round(totalTime / stats.length);
+  },
 }));

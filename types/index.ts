@@ -1,21 +1,9 @@
-export interface Word {
-  id: string;
-  clue: string;
-  answer: string;
-  orientation: "across" | "down";
-  startRow: number;
-  startCol: number;
-}
-
 export interface Puzzle {
   id: string;
-  title: string;
-  difficulty: string;
-  language: "en" | "ru";
-  gridSize: {
-    rows: number;
-    cols: number;
-  };
+  name: string;
+  difficulty: "easy" | "medium" | "hard";
+  size: { rows: number; cols: number };
+  grid: (string | null)[][];
   words: Word[];
 }
 
@@ -23,15 +11,16 @@ export interface CrosswordData {
   puzzles: Puzzle[];
 }
 
-export interface Cell {
-  letter: string;
-  isBlack: boolean;
-  number?: number;
+export interface Word {
+  id: number;
+  clue: string;
+  answer: string;
+  startRow: number;
+  startCol: number;
+  orientation: "across" | "down";
 }
 
-export interface GridState {
-  [key: string]: string; // "row-col": "letter"
-}
+export type GridState = { [key: string]: string };
 
 export interface Cursor {
   row: number;
@@ -81,4 +70,8 @@ export interface GameState {
   useHint: (type: "reveal" | "check") => void;
   revealLetter: () => void;
   checkWord: () => boolean;
+  // Statistics Getters
+  getTotalPuzzlesCompleted: () => number;
+  getPerfectSolves: () => number;
+  getAverageCompletionTime: () => number;
 }

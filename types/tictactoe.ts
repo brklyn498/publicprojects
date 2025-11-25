@@ -8,6 +8,22 @@ export interface WinLine {
     positions: [number, number][];
 }
 
+export interface ModeStats {
+    wins: number;
+    losses: number;
+    draws: number;
+    gamesPlayed: number;
+}
+
+export interface GameStats {
+    pvp: ModeStats;
+    pvc: ModeStats;
+    currentStreak: number;
+    bestStreak: number;
+    lastGameMode: GameMode | null;
+    lastGameResult: "win" | "loss" | "draw" | null;
+}
+
 export interface TicTacToeState {
     board: Board;
     currentPlayer: Player;
@@ -16,10 +32,12 @@ export interface TicTacToeState {
     winLine: WinLine | null;
     moveCount: number;
     gameMode: GameMode;
+    stats: GameStats;
     // Actions
     makeMove: (row: number, col: number) => void;
     resetGame: () => void;
     checkWinner: () => void;
     setGameMode: (mode: GameMode) => void;
     makeAIMove: () => void;
+    recordGameResult: (result: "win" | "loss" | "draw") => void;
 }

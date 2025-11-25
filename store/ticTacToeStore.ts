@@ -1,9 +1,34 @@
 import { create } from "zustand";
-import { TicTacToeState, Board, Player, WinLine, GameMode } from "@/types/tictactoe";
+import { TicTacToeState, Board, Player, WinLine, GameMode, GameStats } from "@/types/tictactoe";
 
 // Initialize empty 4x4 board
 const createEmptyBoard = (): Board => {
     return Array(4).fill(null).map(() => Array(4).fill(null));
+};
+
+// Initialize empty stats
+const createEmptyStats = (): GameStats => ({
+    pvp: { wins: 0, losses: 0, draws: 0, gamesPlayed: 0 },
+    pvc: { wins: 0, losses: 0, draws: 0, gamesPlayed: 0 },
+    currentStreak: 0,
+    bestStreak: 0,
+    lastGameMode: null,
+    lastGameResult: null,
+});
+
+// Load stats from localStorage
+const loadStats = (): GameStats => {
+    if (typeof window === "undefined") return createEmptyStats();
+
+    const saved = localStorage.getItem("tictactoe_stats");
+    if (saved) {
+        try {
+            return JSON.parse(saved);
+        } catch {
+            return createEmptyStats();
+        }
+    }
+    return createEmptyStats();
 };
 
 // Check all possible win conditions for 4x4 board
@@ -125,6 +150,7 @@ export const useTicTacToeStore = create<TicTacToeState>((set, get) => ({
     winLine: null,
     moveCount: 0,
     gameMode: "pvp",
+    stats: loadStats(),
 
     setGameMode: (mode: GameMode) => {
         set({ gameMode: mode });
@@ -153,9 +179,20 @@ export const useTicTacToeStore = create<TicTacToeState>((set, get) => ({
 
         if (winner) {
             set({ gameStatus: "won", winner, winLine });
+
+            // Record game result
+            const isPlayerX = winner === "X";
+            if (gameMode === "pvp") {
+                // In PvP, current winner won, other player lost
+                get().recordGameResult(isPlayerX ? "win" : "loss");
+            } else {
+                // In PvC, X is always the player
+                get().recordGameResult(isPlayerX ? "win" : "loss");
+            }
         } else if (get().moveCount + 1 === 16) {
             // All cells filled, it's a draw
             set({ gameStatus: "draw" });
+            get().recordGameResult("draw");
         } else {
             // Switch player
             const nextPlayer = currentPlayer === "X" ? "O" : "X";
@@ -180,6 +217,43 @@ export const useTicTacToeStore = create<TicTacToeState>((set, get) => ({
             const [row, col] = move;
             get().makeMove(row, col);
         }
+    },
+
+    recordGameResult: (result: "win" | "loss" | "draw") => {
+        const { stats, gameMode } = get();
+        const mode = gameMode === "pvp" ? "pvp" : "pvc";
+
+        const newStats = { ...stats };
+
+        // Update mode-specific stats
+        newStats[mode].gamesPlayed += 1;
+        if (result === "win") {
+            newStats[mode].wins += 1;
+        } else if (result === "loss") {
+            newStats[mode].losses += 1;
+        } else {
+            newStats[mode].draws += 1;
+        }
+
+        // Update streak
+        if (result === "win") {
+            newStats.currentStreak += 1;
+            if (newStats.currentStreak > newStats.bestStreak) {
+                newStats.bestStreak = newStats.currentStreak;
+            }
+        } else {
+            newStats.currentStreak = 0;
+        }
+
+        newStats.lastGameMode = gameMode;
+        newStats.lastGameResult = result;
+
+        // Save to localStorage
+        if (typeof window !== "undefined") {
+            localStorage.setItem("tictactoe_stats", JSON.stringify(newStats));
+        }
+
+        set({ stats: newStats });
     },
 
     resetGame: () => {

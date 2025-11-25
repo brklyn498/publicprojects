@@ -99,6 +99,37 @@ export default function Home() {
               <Play className="w-8 h-8 text-blue-600 dark:text-blue-400" />
             </div>
           </motion.div>
+
+          {/* Memory Match Card */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.1 }}
+            whileHover={{ scale: 1.02 }}
+            onClick={() => router.push('/memory')}
+            className="
+              cursor-pointer
+              bg-white dark:bg-dark-card
+              rounded-lg shadow-md
+              hover:shadow-lg
+              transition-all duration-200
+              p-6
+              border border-gray-200 dark:border-dark-border
+              mb-6
+            "
+          >
+            <div className="flex items-center justify-between">
+              <div>
+                <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-1">
+                  Memory Match 🎴
+                </h3>
+                <p className="text-gray-600 dark:text-gray-400 text-sm">
+                  Flip cards and find matching pairs!
+                </p>
+              </div>
+              <Play className="w-8 h-8 text-purple-600 dark:text-purple-400" />
+            </div>
+          </motion.div>
         </div>
 
         {/* Crossword Puzzles Section */}

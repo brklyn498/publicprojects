@@ -128,7 +128,7 @@ export const useMemoryGameStore = create<MemoryGameState>((set, get) => ({
 
         const isMatch = firstCard.pairId === secondCard.pairId;
 
-        if (is Match) {
+        if (isMatch) {
             // Cards match!
             const newCards = cards.map((c) =>
                 c.id === firstId || c.id === secondId ? { ...c, isMatched: true } : c
@@ -141,86 +141,86 @@ export const useMemoryGameStore = create<MemoryGameState>((set, get) => ({
                 matchesFound: newMatchesFound,
             });
 
-      // Check for win
-      if(newMatchesFound === totalPairs) {
-        const { moves, timerStarted } = get();
-const timeElapsed = timerStarted
-    ? Math.floor((Date.now() - timerStarted) / 1000)
-    : 0;
+            // Check for win
+            if (newMatchesFound === totalPairs) {
+                const { moves, timerStarted } = get();
+                const timeElapsed = timerStarted
+                    ? Math.floor((Date.now() - timerStarted) / 1000)
+                    : 0;
 
-const isPerfect = moves === totalPairs; // Perfect = minimum moves
+                const isPerfect = moves === totalPairs; // Perfect = minimum moves
 
-const gameStats: MemoryGameStats = {
-    difficulty,
-    moves,
-    timeElapsed,
-    matchesFound: newMatchesFound,
-    totalPairs,
-    completedAt: new Date().toISOString(),
-    isPerfect,
-};
+                const gameStats: MemoryGameStats = {
+                    difficulty,
+                    moves,
+                    timeElapsed,
+                    matchesFound: newMatchesFound,
+                    totalPairs,
+                    completedAt: new Date().toISOString(),
+                    isPerfect,
+                };
 
-// Update history
-const newHistory = [...get().gameHistory, gameStats];
+                // Update history
+                const newHistory = [...get().gameHistory, gameStats];
 
-// Update best scores
-const bestScores = { ...get().bestScores };
-const currentBest = bestScores[difficulty];
-if (!currentBest || timeElapsed < currentBest.timeElapsed) {
-    bestScores[difficulty] = gameStats;
-}
+                // Update best scores
+                const bestScores = { ...get().bestScores };
+                const currentBest = bestScores[difficulty];
+                if (!currentBest || timeElapsed < currentBest.timeElapsed) {
+                    bestScores[difficulty] = gameStats;
+                }
 
-// Save to localStorage
-if (typeof window !== "undefined") {
-    localStorage.setItem("memory_game_stats", JSON.stringify(newHistory));
-    localStorage.setItem("memory_best_scores", JSON.stringify(bestScores));
-}
+                // Save to localStorage
+                if (typeof window !== "undefined") {
+                    localStorage.setItem("memory_game_stats", JSON.stringify(newHistory));
+                    localStorage.setItem("memory_best_scores", JSON.stringify(bestScores));
+                }
 
-set({
-    gameStatus: "won",
-    gameHistory: newHistory,
-    bestScores,
-});
-      }
-    } else {
-    // Cards don't match - flip them back
-    const newCards = cards.map((c) =>
-        c.id === firstId || c.id === secondId ? { ...c, isFlipped: false } : c
-    );
+                set({
+                    gameStatus: "won",
+                    gameHistory: newHistory,
+                    bestScores,
+                });
+            }
+        } else {
+            // Cards don't match - flip them back
+            const newCards = cards.map((c) =>
+                c.id === firstId || c.id === secondId ? { ...c, isFlipped: false } : c
+            );
 
-    set({
-        cards: newCards,
-        flippedCards: [],
-    });
-}
-  },
+            set({
+                cards: newCards,
+                flippedCards: [],
+            });
+        }
+    },
 
-updateTimer: () => {
-    const { timerStarted, gameStatus } = get();
-    if (gameStatus === "playing" && timerStarted) {
-        const elapsed = Math.floor((Date.now() - timerStarted) / 1000);
-        set({ timerElapsed: elapsed });
-    }
-},
+    updateTimer: () => {
+        const { timerStarted, gameStatus } = get();
+        if (gameStatus === "playing" && timerStarted) {
+            const elapsed = Math.floor((Date.now() - timerStarted) / 1000);
+            set({ timerElapsed: elapsed });
+        }
+    },
 
     resetGame: () => {
         const { difficulty, theme } = get();
         get().initializeGame(difficulty, theme);
     },
 
-        // Statistics getters
-        getTotalGamesPlayed: () => {
-            return get().gameHistory.length;
-        },
+    // Statistics getters
+    getTotalGamesPlayed: () => {
+        return get().gameHistory.length;
+    },
 
-            getPerfectGames: () => {
-                return get().gameHistory.filter((g) => g.isPerfect).length;
-            },
+    getPerfectGames: () => {
+        return get().gameHistory.filter((g) => g.isPerfect).length;
+    },
 
-                getAverageTime: () => {
-                    const history = get().gameHistory;
-                    if (history.length === 0) return 0;
-                    const total = history.reduce((sum, g) => sum + g.timeElapsed, 0);
-                    return Math.round(total / history.length);
-                },
+    getAverageTime: () => {
+        const history = get().gameHistory;
+        if (history.length === 0) return 0;
+        const total = history.reduce((sum, g) => sum + g.timeElapsed, 0);
+        return Math.round(total / history.length);
+    },
 }));

@@ -138,7 +138,7 @@ export default function Home() {
                   <div className="flex items-center justify-between">
                     <div>
                       <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-1">
-                        {puzzle.name}
+                        {(puzzle as any).title}
                       </h3>
                       <div className="flex items-center gap-2">
                         <span
@@ -155,7 +155,7 @@ export default function Home() {
                           {puzzle.difficulty.toUpperCase()}
                         </span>
                         <span className="text-gray-600 dark:text-gray-400 text-sm">
-                          {puzzle.size.rows}×{puzzle.size.cols}
+                          {(puzzle as any).gridSize.rows}×{(puzzle as any).gridSize.cols}
                         </span>
                       </div>
                     </div>

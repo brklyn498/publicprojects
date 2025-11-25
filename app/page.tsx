@@ -3,10 +3,11 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
-import { CheckCircle2, Play, Trophy } from "lucide-react";
+import { CheckCircle2, Play, Trophy, User, Gamepad2 } from "lucide-react";
 import { CrosswordData } from "@/types";
 import CrosswordStatsOverview from "@/components/CrosswordStatsOverview";
 import crosswordData from "@/crossword vocab.json";
+
 
 export default function Home() {
   const router = useRouter();
@@ -24,43 +25,66 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center p-4 sm:p-6">
+    <div className="min-h-screen flex flex-col bg-warm-gray dark:bg-dark-bg">
+      {/* Header */}
+      <header className="bg-white dark:bg-dark-card border-b border-gray-200 dark:border-dark-border py-6 px-4">
+        <div className="max-w-6xl mx-auto flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <Gamepad2 className="w-8 h-8 text-blue-600 dark:text-blue-400" />
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 dark:text-white">
+              GameHub
+            </h1>
+          </div>
+          <div className="flex items-center gap-2">
+            <motion.button
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              onClick={() => router.push('/profile')}
+              className="
+                flex items-center gap-2
+                px-3 py-2 rounded-lg
+                bg-purple-100 dark:bg-purple-900/20
+                hover:bg-purple-200 dark:hover:bg-purple-900/30
+                text-purple-700 dark:text-purple-400
+                font-medium transition-colors
+              "
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              title="View Profile"
+            >
+              <User className="w-5 h-5" />
+              <span className="hidden sm:inline">Profile</span>
+            </motion.button>
+
+            <motion.button
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              onClick={() => router.push('/stats')}
+              className="
+                flex items-center gap-2
+                px-3 py-2 rounded-lg
+                bg-blue-100 dark:bg-blue-900/20
+                hover:bg-blue-200 dark:hover:bg-blue-900/30
+                text-blue-700 dark:text-blue-400
+                font-medium transition-colors
+              "
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              title="View Statistics"
+            >
+              <Trophy className="w-5 h-5" />
+              <span className="hidden sm:inline">Stats</span>
+            </motion.button>
+          </div>
+        </div>
+      </header>
+
       <motion.div
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="max-w-2xl w-full"
+        className="max-w-2xl mx-auto px-4 sm:px-6 py-8 w-full"
       >
-        {/* Header */}
-        <div className="text-center mb-8 sm:mb-12">
-          <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-gray-900 dark:text-white mb-3">
-            Puzzle Games
-          </h1>
-          <p className="text-gray-600 dark:text-gray-400 text-lg sm:text-xl mb-4">
-            Choose a game to play
-          </p>
-
-          {/* View Statistics Button */}
-          <motion.button
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3 }}
-            onClick={() => router.push('/stats')}
-            className="
-              inline-flex items-center gap-2
-              px-6 py-3 rounded-lg
-              bg-blue-600 hover:bg-blue-700
-              text-white font-medium
-              transition-colors shadow-md
-            "
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            <Trophy className="w-5 h-5" />
-            View Statistics
-          </motion.button>
-        </div>
-
         {/* Crossword Statistics */}
         <CrosswordStatsOverview />
 

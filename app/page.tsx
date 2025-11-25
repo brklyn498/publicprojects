@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
-import { CheckCircle2, Play } from "lucide-react";
+import { CheckCircle2, Play, Trophy } from "lucide-react";
 import { CrosswordData } from "@/types";
 import CrosswordStatsOverview from "@/components/CrosswordStatsOverview";
 import crosswordData from "@/crossword vocab.json";
@@ -36,9 +36,29 @@ export default function Home() {
           <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-gray-900 dark:text-white mb-3">
             Puzzle Games
           </h1>
-          <p className="text-gray-600 dark:text-gray-400 text-lg sm:text-xl">
+          <p className="text-gray-600 dark:text-gray-400 text-lg sm:text-xl mb-4">
             Choose a game to play
           </p>
+
+          {/* View Statistics Button */}
+          <motion.button
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
+            onClick={() => router.push('/stats')}
+            className="
+              inline-flex items-center gap-2
+              px-6 py-3 rounded-lg
+              bg-blue-600 hover:bg-blue-700
+              text-white font-medium
+              transition-colors shadow-md
+            "
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            <Trophy className="w-5 h-5" />
+            View Statistics
+          </motion.button>
         </div>
 
         {/* Crossword Statistics */}

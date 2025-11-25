@@ -33,14 +33,66 @@ export default function Home() {
         {/* Header */}
         <div className="text-center mb-8 sm:mb-12">
           <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-gray-900 dark:text-white mb-3">
-            Crossword Puzzles
+            Puzzle Games
           </h1>
           <p className="text-gray-600 dark:text-gray-400 text-lg sm:text-xl">
-            Choose a puzzle to get started
+            Choose a game to play
           </p>
         </div>
 
-        {/* Puzzle List */}
+        {/* Games Section */}
+        <div className="space-y-6 mb-8">
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Games</h2>
+
+          {/* Tic Tac Toe Card */}
+          <motion.button
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4 }}
+            onClick={() => router.push("/tictactoe")}
+            className="
+              w-full bg-white dark:bg-dark-card hover:bg-gray-50 dark:hover:bg-dark-border
+              border-2 border-gray-200 dark:border-dark-border hover:border-gray-300 dark:hover:border-gray-500
+              rounded-xl p-6 sm:p-8
+              transition-all duration-200
+              group relative
+              shadow-sm hover:shadow-md
+            "
+          >
+            <div className="flex items-center justify-between">
+              <div className="flex-1 text-left">
+                <div className="flex items-center gap-3 mb-2">
+                  <h3 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white">
+                    Tic Tac Toe 4×4
+                  </h3>
+                </div>
+                <div className="flex items-center gap-4 text-gray-600 dark:text-gray-400">
+                  <span className="inline-block px-3 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 rounded-full text-sm font-medium">
+                    2 Players
+                  </span>
+                  <span className="text-sm">
+                    Classic Strategy Game
+                  </span>
+                </div>
+              </div>
+              <div className="flex-shrink-0 ml-4">
+                <div
+                  className="
+                    w-12 h-12 sm:w-14 sm:h-14
+                    bg-black dark:bg-white group-hover:bg-gray-800 dark:group-hover:bg-gray-200
+                    rounded-full flex items-center justify-center
+                    transition-colors
+                  "
+                >
+                  <Play className="w-5 h-5 sm:w-6 sm:h-6 text-white dark:text-black ml-1" />
+                </div>
+              </div>
+            </div>
+          </motion.button>
+        </div>
+
+        {/* Crossword Puzzles Section */}
+        <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">Crossword Puzzles</h2>
         <div className="space-y-4">
           {data.puzzles.map((puzzle, index) => {
             const isSolved = solvedPuzzles.includes(puzzle.id);

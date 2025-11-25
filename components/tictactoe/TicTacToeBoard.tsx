@@ -13,7 +13,13 @@ export default function TicTacToeBoard() {
 
     return (
         <div className="flex items-center justify-center p-4">
-            <div className="inline-grid gap-2 bg-black dark:bg-gray-600 p-2 rounded-lg shadow-2xl">
+            <div
+                className="inline-grid gap-2 bg-black dark:bg-gray-600 p-2 rounded-lg shadow-2xl"
+                style={{
+                    gridTemplateColumns: "repeat(4, minmax(0, 1fr))",
+                    gridTemplateRows: "repeat(4, minmax(0, 1fr))",
+                }}
+            >
                 {board.map((row, rowIndex) =>
                     row.map((cell, colIndex) => {
                         const isWinning = isWinningCell(rowIndex, colIndex);

@@ -7,7 +7,7 @@ import { Trophy, Users } from "lucide-react";
 import confetti from "canvas-confetti";
 
 export default function WinModalTTT() {
-    const { gameStatus, winner, resetGame } = useTicTacToeStore();
+    const { gameStatus, winner, resetGame, gameMode } = useTicTacToeStore();
 
     useEffect(() => {
         if (gameStatus === "won") {
@@ -75,7 +75,11 @@ export default function WinModalTTT() {
                         </motion.div>
 
                         <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
-                            {gameStatus === "won" ? `Player ${winner} Wins!` : "It's a Draw!"}
+                            {gameStatus === "won"
+                                ? (gameMode === "pvc" && winner === "O"
+                                    ? "Computer Wins!"
+                                    : `Player ${winner} Wins!`)
+                                : "It's a Draw!"}
                         </h2>
 
                         {gameStatus === "won" && (
@@ -95,7 +99,7 @@ export default function WinModalTTT() {
                             className="
                 w-full bg-black dark:bg-white hover:bg-gray-800 dark:hover:bg-gray-200 
                 text-white dark:text-black
-                font-semibold py-4 px-6 rounded-lg
+                font-semibold  py-4 px-6 rounded-lg
                 transition-colors duration-200
                 text-lg
               "

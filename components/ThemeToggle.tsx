@@ -29,7 +29,7 @@ export default function ThemeToggle() {
     <motion.button
       onClick={toggleTheme}
       className="
-        fixed top-4 right-4 z-50
+        fixed top-20 right-4 z-50
         bg-white dark:bg-dark-card
         border-2 border-gray-300 dark:border-dark-border
         rounded-full p-3

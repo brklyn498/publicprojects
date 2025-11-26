@@ -185,6 +185,38 @@ export default function Home() {
               <Play className="w-8 h-8 text-green-600 dark:text-green-400" />
             </div>
           </motion.div>
+
+          {/* Snake Card - Neubrutalist Style */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.3 }}
+            whileHover={{ scale: 1.02 }}
+            onClick={() => router.push('/snake')}
+            className="
+              cursor-pointer
+              bg-yellow-300
+              rounded-lg shadow-md
+              hover:shadow-lg
+              transition-all duration-200
+              p-6
+              border-4 border-black
+              mb-6
+              hover:translate-x-[2px] hover:translate-y-[2px]
+            "
+          >
+            <div className="flex items-center justify-between">
+              <div>
+                <h3 className="text-xl font-black text-black mb-1 uppercase">
+                  Snake 🐍
+                </h3>
+                <p className="text-black font-bold text-sm">
+                  Neubrutalist arcade action!
+                </p>
+              </div>
+              <Play className="w-8 h-8 text-black" strokeWidth={3} />
+            </div>
+          </motion.div>
         </div>
 
         {/* Crossword Puzzles Section */}

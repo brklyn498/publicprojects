@@ -1,13 +1,15 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useProfileStore } from "@/store/profileStore";
 import { motion } from "framer-motion";
-import { Home, Trophy, TrendingUp, Calendar, Star, Award } from "lucide-react";
+import { Home, Trophy, TrendingUp, Calendar, Star, Award, ArrowLeft } from "lucide-react";
+import WelcomeModal from "@/components/profile/WelcomeModal";
 
 export default function ProfilePage() {
     const router = useRouter();
+    const [showWelcome, setShowWelcome] = useState(false);
     const {
         profile,
         achievements,
@@ -19,19 +21,23 @@ export default function ProfilePage() {
         getLevelProgress,
     } = useProfileStore();
 
+    useEffect(() => {
+        // If no profile exists, show the welcome modal
+        if (!profile) {
+            setShowWelcome(true);
+        }
+    }, [profile]);
+
     if (!profile) {
         return (
-            <div className="min-h-screen bg-warm-gray dark:bg-dark-bg flex items-center justify-center">
-                <div className="text-center">
-                    <p className="text-gray-600 dark:text-gray-400">No profile found</p>
-                    <button
-                        onClick={() => router.push("/")}
-                        className="mt-4 px-4 py-2 bg-blue-600 text-white rounded-lg"
-                    >
-                        Go Home
-                    </button>
-                </div>
-            </div>
+            <>
+                {showWelcome && (
+                    <WelcomeModal onComplete={() => {
+                        setShowWelcome(false);
+                        // Profile will be created and component will re-render
+                    }} />
+                )}
+            </>
         );
     }
 
@@ -55,8 +61,8 @@ export default function ProfilePage() {
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
                     >
-                        <Home className="w-5 h-5" />
-                        <span>Home</span>
+                        <ArrowLeft className="w-5 h-5" />
+                        <span>Back</span>
                     </motion.button>
                 </div>
             </header>

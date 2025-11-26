@@ -254,6 +254,51 @@ export const useTicTacToeStore = create<TicTacToeState>((set, get) => ({
         }
 
         set({ stats: newStats });
+
+        // === PROFILE INTEGRATION ===
+        if (typeof window !== "undefined") {
+            try {
+                const { useProfileStore } = require("@/store/profileStore");
+                const profileState = useProfileStore.getState();
+
+                if (profileState.profile) {
+                    // Calculate XP based on result
+                    const xpEarned = result === "win" ? 25 : result === "draw" ? 10 : 5;
+
+                    // Update profile
+                    profileState.addXP(xpEarned, `Tic Tac Toe ${result}`);
+                    profileState.updateStreak();
+
+                    // Update game stats
+                    const totalGames = newStats.pvp.gamesPlayed + newStats.pvc.gamesPlayed;
+                    const totalWins = newStats.pvp.wins + newStats.pvc.wins;
+                    const totalLosses = newStats.pvp.losses + newStats.pvc.losses;
+                    const totalDraws = newStats.pvp.draws + newStats.pvc.draws;
+                    const winRate = totalGames > 0 ? Math.round((totalWins / totalGames) * 100) : 0;
+
+                    profileState.updateGameStats("tictactoe", {
+                        gamesPlayed: totalGames,
+                        wins: totalWins,
+                        losses: totalLosses,
+                        draws: totalDraws,
+                        winRate,
+                        bestStreak: newStats.bestStreak,
+                    });
+
+                    // Log activity
+                    profileState.addActivity({
+                        game: "tictactoe",
+                        action: `${result === "win" ? "Won" : result === "draw" ? "Drew" : "Lost"} ${mode === "pvp" ? "PvP" : "vs AI"} game`,
+                        xpEarned,
+                    });
+
+                    // Check achievements
+                    profileState.checkAchievements();
+                }
+            } catch (error) {
+                console.error("Profile update error:", error);
+            }
+        }
     },
 
     resetGame: () => {
